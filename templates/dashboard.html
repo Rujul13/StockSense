@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>User Dashboard</title></head>
+<body class="container mt-5">
+  <h2>Welcome, {{ username }}</h2>
+  <ul>
+    {% for stock in stocks %}
+    <li><a href="{{ url_for('stock_details', stock_name=stock[0]) }}">{{ stock[0] }}</a></li>
+    {% endfor %}
+  </ul>
+  <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>

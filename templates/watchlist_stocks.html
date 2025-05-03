@@ -1,0 +1,14 @@
+<h2>Watchlist {{ watchlist_id }}</h2>
+<form method="POST" action="{{ url_for('add_stock_to_watchlist', watchlist_id=watchlist_id) }}">
+    <input type="text" name="stock_name" placeholder="Stock symbol" required>
+    <button type="submit">Add Stock</button>
+</form>
+
+<ul>
+{% for s in stocks %}
+    <li>
+        {{ s[0] }}
+        <a href="{{ url_for('remove_stock', watchlist_id=watchlist_id, stock_name=s[0]) }}" class="btn btn-sm btn-danger ms-2">Remove</a>
+    </li>
+{% endfor %}
+</ul>
