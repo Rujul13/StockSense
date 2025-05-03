@@ -37,4 +37,18 @@
    ```bash
    git clone https://github.com/your-username/stocksense.git
    cd stocksense
-2. **Clone the repository**
+2. **Install dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+3. **Configure the database**
+   - Create a PostgreSQL database named `StockSense`
+   - Update credentials in `app.py` under `get_db_connection()`
+4. **Run the application**
+   
+   ```bash
+   python app.py
+5. **Access in browser**
+   ```bash
+   [python app.py](http://127.0.0.1:5000/)
+
