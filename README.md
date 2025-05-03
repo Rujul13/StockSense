@@ -67,8 +67,14 @@
 │   ├── watchlists.html         # List of user watchlists
 │   └── watchlist_stocks.html   # Stocks inside a watchlist
 ```
-```
+--- 
+
+### 📸 Screenshots
 
 --- 
 
+### 👤 Author
+- Ujjwal Reddy Kalvolu Sreenivasa Reddy
+- Dhanush Chandra Shekar
+- Rujul Jadav Prakash
 
