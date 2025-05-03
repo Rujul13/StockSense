@@ -70,6 +70,7 @@
 --- 
 
 ### 📸 Screenshots
+![Dashboard](landing.png)
 
 --- 
 
