@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ stock_name }} - Statistics</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- ✅ Chart.js and financial plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@3.3.0/dist/chartjs-chart-financial.min.js"></script>
+  
+
+  <style>
+    canvas {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body class="container mt-5">
+
+  <h1 class="text-primary">{{ stock_name }} - Statistics</h1>
+
+  <ul class="list-group my-4">
+    <li class="list-group-item">Average Close Price: <strong>{{ avg_close }}</strong></li>
+    <li class="list-group-item">Highest High: <strong>{{ high_max }}</strong></li>
+    <li class="list-group-item">Lowest Low: <strong>{{ low_min }}</strong></li>
+    <li class="list-group-item">Total Volume Traded: <strong>{{ total_volume }}</strong></li>
+  </ul>
+
+  <h3 class="mt-5">Line Chart - Close Price Over Time</h3>
+  <canvas id="lineChart" width="1000" height="300"></canvas>
+
+  <h3 class="mt-5">Area Chart - High vs Low</h3>
+  <canvas id="areaChart" width="1000" height="300"></canvas>
+  <!-- ✅ Chart script -->
+  <script>
+    const dates = {{ candlestick_data | tojson }}.map(entry => entry.x.split('T')[0]);
+    const closePrices = {{ candlestick_data | tojson }}.map(entry => entry.c);
+    const volumes = {{ candlestick_data | tojson }}.map(entry => entry.v);
+    const highPrices = {{ candlestick_data | tojson }}.map(entry => entry.h);
+    const lowPrices = {{ candlestick_data | tojson }}.map(entry => entry.l);
+  
+    // Line Chart
+    new Chart(document.getElementById('lineChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [{
+          label: 'Close Price',
+          data: closePrices,
+          borderColor: 'blue',
+          fill: false
+        }]
+      }
+    });
+  
+    // Area Chart (Line with Fill)
+    new Chart(document.getElementById('areaChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [
+          {
+            label: 'High',
+            data: highPrices,
+            borderColor: 'green',
+            fill: true
+          },
+          {
+            label: 'Low',
+            data: lowPrices,
+            borderColor: 'red',
+            fill: true
+          }
+        ]
+      }
+    });
+  </script>
+  <div class="text-center mt-5">
+  <a href="{{ url_for('index') }}" class="btn btn-secondary">
+    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+  </a>
+</div>
+  
+
+</body>
+</html>
