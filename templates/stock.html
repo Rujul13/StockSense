@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ stock_name }} - Statistics</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@3.3.0/dist/chartjs-chart-financial.min.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --dark-bg: #0d1117;
+      --card-bg: #161b22;
+      --accent: #22c55e;
+      --text: #e6edf3;
+      --muted: #8b949e;
+    }
+
+    body {
+      background-color: var(--dark-bg);
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 2rem 1rem 4rem;
+    }
+
+    h1, h3 {
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .stats-container {
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1.05rem;
+      transition: 0.3s;
+    }
+
+    .stat-card:hover {
+      background-color: #1e293b;
+      transform: translateY(-2px);
+    }
+
+    .icon {
+      margin-right: 0.6rem;
+      color: var(--muted);
+    }
+
+    canvas {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      padding: 10px;
+      margin: 0 auto 2rem;
+      display: block;
+      width: 1000px;
+      height: 300px;
+    }
+
+    .btn-custom {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      background-color: var(--accent);
+      color: var(--dark-bg);
+      text-decoration: none;
+      font-weight: 500;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+
+    .btn-custom:hover {
+      background-color: #16a34a;
+    }
+
+    @media (max-width: 768px) {
+      .stats-container {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+      }
+
+      canvas {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header with Add to Watchlist button -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 px-3">
+    <h1 class="m-0">{{ stock_name }} - Statistics</h1>
+    {% if 'username' in session %}
+    <form method="POST" action="{{ url_for('add_stock_to_watchlist') }}" class="d-flex align-items-center gap-2">
+      <select name="watchlist_id" class="form-select form-select-sm" required>
+        <option value="">Select Watchlist</option>
+        {% for watchlist in user_watchlists %}
+        <option value="{{ watchlist[0] }}">{{ watchlist[1] }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="stock_name" value="{{ stock_name }}">
+      <button type="submit" class="btn btn-sm btn-outline-success">
+        <i class="fas fa-plus me-1"></i> Add to Watchlist
+      </button>
+    </form>
+    {% endif %}
+  </div>
+  
+
+  <!-- Stats -->
+  <div class="stats-container">
+    <div class="stat-card"><span><i class="fas fa-dollar-sign icon"></i>Average Close</span><strong>{{ avg_close }}</strong></div>
+    <div class="stat-card"><span><i class="fas fa-arrow-up icon"></i>Highest High</span><strong>{{ high_max }}</strong></div>
+    <div class="stat-card"><span><i class="fas fa-arrow-down icon"></i>Lowest Low</span><strong>{{ low_min }}</strong></div>
+    <div class="stat-card"><span><i class="fas fa-chart-bar icon"></i>Total Volume</span><strong>{{ total_volume }}</strong></div>
+  </div>
+
+  <!-- Charts -->
+  <h3 class="text-center">📈 Close Price Over Time</h3>
+  <canvas id="lineChart" width="1000" height="300"></canvas>
+
+  <h3 class="text-center">📉 High vs Low</h3>
+  <canvas id="areaChart" width="1000" height="300"></canvas>
+
+  <!-- Chart Scripts -->
+  <script>
+    const data = {{ candlestick_data | tojson }};
+    const dates = data.map(entry => entry.x.split('T')[0]);
+    const closePrices = data.map(entry => entry.c);
+    const highPrices = data.map(entry => entry.h);
+    const lowPrices = data.map(entry => entry.l);
+
+    new Chart(document.getElementById('lineChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [{
+          label: 'Close Price',
+          data: closePrices,
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59,130,246,0.1)',
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: { legend: { display: true, labels: { color: "#fff" } } },
+        scales: {
+          x: { ticks: { color: "#cbd5e1" } },
+          y: { ticks: { color: "#cbd5e1" } }
+        },
+        animation: { duration: 800 }
+      }
+    });
+
+    new Chart(document.getElementById('areaChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [
+          {
+            label: 'High',
+            data: highPrices,
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16,185,129,0.2)',
+            fill: true,
+            tension: 0.3
+          },
+          {
+            label: 'Low',
+            data: lowPrices,
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239,68,68,0.2)',
+            fill: true,
+            tension: 0.3
+          }
+        ]
+      },
+      options: {
+        responsive: false,
+        plugins: { legend: { display: true, labels: { color: "#fff" } } },
+        scales: {
+          x: { ticks: { color: "#cbd5e1" } },
+          y: { ticks: { color: "#cbd5e1" } }
+        },
+        animation: { duration: 800 }
+      }
+    });
+  </script>
+
+</body>
+</html>

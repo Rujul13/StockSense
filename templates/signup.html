@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up - StockSense</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-bg: #0d1117;
+      --card-bg: #161b22;
+      --accent: #22c55e;
+      --text: #e6edf3;
+      --muted: #8b949e;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--dark-bg);
+      color: var(--text);
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: transparent;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar a.brand {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+
+    /* Page layout container */
+    .page-container {
+      min-height: calc(100vh - 70px); /* Adjust height minus navbar */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .signup-card {
+      background: var(--card-bg);
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.7rem;
+      background-color: var(--dark-bg);
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    input::placeholder {
+      color: var(--muted);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 0.15rem rgba(34, 197, 94, 0.2);
+    }
+
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      background-color: var(--accent);
+      color: var(--dark-bg);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #16a34a;
+    }
+
+    .message {
+      color: #ef4444;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 1.2rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .login-link a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="{{ url_for('main') }}" class="brand">StockSense</a>
+  </div>
+
+  <!-- Centered Sign-Up Card -->
+  <div class="page-container">
+    <div class="signup-card">
+      <h2>Create Your Account</h2>
+      {% if message %}<p class="message">{{ message }}</p>{% endif %}
+      <form method="POST">
+        <label for="username">Username</label>
+        <input type="text" name="username" placeholder="Your username" required>
+
+        <label for="email">Email</label>
+        <input type="email" name="email" placeholder="you@example.com" required>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" placeholder="Create a strong password" required>
+
+        <button type="submit">Sign Up</button>
+      </form>
+      <div class="login-link">
+        Already have an account? <a href="login.html">Back to Login</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+-- Create table for Users
+CREATE TABLE Users (
+    user_ID INT PRIMARY KEY NOT NULL,
+    Username CHAR(50) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash TEXT
+);
+-- Create tables for user stocks
+CREATE TABLE UserStocks (
+    user_ID INT,
+    stock_name VARCHAR(100),
+    PRIMARY KEY (user_ID, stock_name),
+    FOREIGN KEY (user_ID) REFERENCES Users(user_ID),
+    FOREIGN KEY (stock_name) REFERENCES Stock(stock_name)
+);
+
+-- Create table for Stock
+CREATE TABLE Stock (
+    stock_name VARCHAR(100) PRIMARY KEY
+);
+
+-- Create table for Date
+CREATE TABLE Date (
+    date DATE PRIMARY KEY
+);
+
+-- Create table for Price
+CREATE TABLE Price (
+    Price_id INT PRIMARY KEY,
+    stock_name VARCHAR(100),
+    Date DATE,
+    open DECIMAL(10, 2),
+    high DECIMAL(10, 2),
+    low DECIMAL(10, 2),
+    close DECIMAL(10, 2),
+    volume BIGINT,
+    FOREIGN KEY (stock_name) REFERENCES Stock(stock_name),
+    FOREIGN KEY (Date) REFERENCES Date(date)
+);
+
+CREATE TABLE Watchlists (
+    watchlist_id SERIAL PRIMARY KEY,
+    user_ID INT REFERENCES Users(user_ID),
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE WatchlistStocks (
+    watchlist_id INT REFERENCES Watchlists(watchlist_id),
+    stock_name VARCHAR(100) REFERENCES Stock(stock_name),
+    PRIMARY KEY (watchlist_id, stock_name)
+);
