@@ -6,8 +6,6 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
-# Database connection
-
 def get_db_connection():
     return psycopg2.connect(
         dbname='FinalProject',
@@ -17,12 +15,10 @@ def get_db_connection():
         port='5432'
     )
 
-# Home/Login redirect
 @app.route('/')
 def home():
     return redirect(url_for('login'))
 
-# Login route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -41,13 +37,11 @@ def login():
             error = 'Invalid credentials'
     return render_template('login.html', error=error)
 
-# Logout
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
 
-# Signup
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     message = None
@@ -71,7 +65,6 @@ def signup():
         conn.close()
     return render_template('signup.html', message=message)
 
-# Main dashboard with stocks
 @app.route('/index')
 def index():
     conn = get_db_connection()
@@ -87,7 +80,6 @@ def index():
     conn.close()
     return render_template('index.html', stocks=stocks, user_watchlists=user_watchlists)
 
-# Create watchlist
 @app.route('/watchlists/create', methods=['POST'])
 def create_watchlist():
     if 'username' not in session:
@@ -102,7 +94,18 @@ def create_watchlist():
     conn.close()
     return redirect(url_for('index'))
 
-# Add stock to watchlist
+@app.route('/watchlists/delete/<int:watchlist_id>', methods=['POST'])
+def delete_watchlist(watchlist_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM WatchlistStocks WHERE watchlist_id = %s", (watchlist_id,))
+    cur.execute("DELETE FROM Watchlists WHERE watchlist_id = %s", (watchlist_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('view_all_watchlists'))
+
 @app.route('/watchlists/add_stock', methods=['POST'])
 def add_stock_to_watchlist():
     if 'username' not in session:
@@ -120,7 +123,6 @@ def add_stock_to_watchlist():
         conn.close()
     return redirect(url_for('index'))
 
-# View all watchlists for the current user
 @app.route('/watchlists')
 def view_all_watchlists():
     if 'username' not in session:
@@ -134,7 +136,6 @@ def view_all_watchlists():
     conn.close()
     return render_template('watchlists.html', watchlists=watchlists)
 
-# View stocks in a specific watchlist
 @app.route('/watchlists/<int:watchlist_id>')
 def view_watchlist_stocks(watchlist_id):
     if 'username' not in session:
@@ -150,23 +151,18 @@ def view_watchlist_stocks(watchlist_id):
     stocks = cur.fetchall()
     conn.close()
     return render_template('watchlist_stocks.html', watchlist_id=watchlist_id, stocks=stocks)
+
 @app.route('/watchlists/<int:watchlist_id>/remove/<stock_name>')
 def remove_stock(watchlist_id, stock_name):
     if 'username' not in session:
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute(
-        "DELETE FROM WatchlistStocks WHERE watchlist_id = %s AND stock_name = %s",
-        (watchlist_id, stock_name)
-    )
+    cur.execute("DELETE FROM WatchlistStocks WHERE watchlist_id = %s AND stock_name = %s", (watchlist_id, stock_name))
     conn.commit()
     conn.close()
-
     return redirect(url_for('view_watchlist_stocks', watchlist_id=watchlist_id))
 
-# View stock details
 @app.route('/stock/<stock_name>')
 def stock_details(stock_name):
     conn = get_db_connection()

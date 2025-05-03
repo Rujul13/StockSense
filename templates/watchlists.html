@@ -32,7 +32,11 @@
             <div class="card watchlist-card p-3">
                 <h5>{{ w[1] }}</h5>
                 <a href="{{ url_for('view_watchlist_stocks', watchlist_id=w[0]) }}" class="btn btn-outline-primary btn-sm mt-2">View Stocks</a>
-                <!-- Optional: buttons to delete/rename -->
+                
+                <!-- Delete Button -->
+                <form method="POST" action="{{ url_for('delete_watchlist', watchlist_id=w[0]) }}" class="mt-2">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
             </div>
         </div>
         {% endfor %}

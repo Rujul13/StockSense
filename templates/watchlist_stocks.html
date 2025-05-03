@@ -4,11 +4,14 @@
     <button type="submit">Add Stock</button>
 </form>
 
-<ul>
-{% for s in stocks %}
-    <li>
-        {{ s[0] }}
-        <a href="{{ url_for('remove_stock', watchlist_id=watchlist_id, stock_name=s[0]) }}" class="btn btn-sm btn-danger ms-2">Remove</a>
-    </li>
-{% endfor %}
-</ul>
+<ul class="list-group">
+    {% for s in stocks %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('stock_details', stock_name=s[0]) }}" class="text-decoration-none">
+                {{ s[0] }}
+            </a>
+            <a href="{{ url_for('remove_stock', watchlist_id=watchlist_id, stock_name=s[0]) }}" class="btn btn-sm btn-danger">Remove</a>
+        </li>
+    {% endfor %}
+    </ul>
+    
