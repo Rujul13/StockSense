@@ -106,12 +106,22 @@
   <!-- Header with Add to Watchlist button -->
   <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 px-3">
     <h1 class="m-0">{{ stock_name }} - Statistics</h1>
-    <form method="POST" action="{{ url_for('add_stock_to_watchlist', stock_name=stock_name) }}">
+    {% if 'username' in session %}
+    <form method="POST" action="{{ url_for('add_stock_to_watchlist') }}" class="d-flex align-items-center gap-2">
+      <select name="watchlist_id" class="form-select form-select-sm" required>
+        <option value="">Select Watchlist</option>
+        {% for watchlist in user_watchlists %}
+        <option value="{{ watchlist[0] }}">{{ watchlist[1] }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="stock_name" value="{{ stock_name }}">
       <button type="submit" class="btn btn-sm btn-outline-success">
         <i class="fas fa-plus me-1"></i> Add to Watchlist
       </button>
     </form>
+    {% endif %}
   </div>
+  
 
   <!-- Stats -->
   <div class="stats-container">

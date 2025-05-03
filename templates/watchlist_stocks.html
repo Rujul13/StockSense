@@ -104,10 +104,21 @@
     <div class="watchlist-container">
         <h2 class="mb-4"><i class="fas fa-eye"></i> Watchlist</h2>
 
-        <form method="POST" action="{{ url_for('add_stock_to_watchlist', watchlist_id=watchlist_id) }}" class="d-flex mb-4 gap-2">
-            <input type="text" name="stock_name" placeholder="Enter Stock Symbol (e.g., AAPL)" class="form-control" required>
-            <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Add</button>
+        <form method="POST" action="{{ url_for('add_stock_to_watchlist') }}" class="d-flex mb-4 gap-2">
+            <select name="stock_name" class="form-select" required>
+                <option value="" disabled selected>Select Stock</option>
+                {% for stock in all_stocks %}
+                <option value="{{ stock[0] }}">{{ stock[0] }}</option>
+                {% endfor %}
+            </select>
+        
+            <input type="hidden" name="watchlist_id" value="{{ watchlist_id }}">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-plus"></i> Add
+            </button>
         </form>
+        
+        
 
         <ul class="list-group">
             {% for s in stocks %}
