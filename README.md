@@ -56,6 +56,7 @@
 
 ### Folder Structure
 
+```
 ├── app.py                      # Flask backend
 ├── templates/
 │   ├── index.html              # Dashboard
@@ -65,7 +66,8 @@
 │   ├── stock.html              # Stock detail page
 │   ├── watchlists.html         # List of user watchlists
 │   └── watchlist_stocks.html   # Stocks inside a watchlist
-
+```
+```
 
 --- 
 
