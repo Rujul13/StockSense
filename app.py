@@ -10,9 +10,9 @@ app.secret_key = 'your_secret_key_here'
 
 def get_db_connection():
     return psycopg2.connect(
-        dbname='FinalProject',
+        dbname='StockSense',
         user='postgres',
-        password='password',
+        password='root',
         host='localhost',
         port='5432'
     )
