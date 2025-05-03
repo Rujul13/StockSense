@@ -8,16 +8,21 @@ app.secret_key = 'your_secret_key_here'
 
 def get_db_connection():
     return psycopg2.connect(
-        dbname='FinalProject',
+        dbname='StockSense',
         user='postgres',
-        password='password',
+        password='root',
         host='localhost',
         port='5432'
     )
 
 @app.route('/')
 def home():
-    return redirect(url_for('login'))
+    return render_template('main.html')
+
+@app.route('/main')
+def main():
+    return render_template("main.html")
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -40,7 +45,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('login'))
+    return redirect(url_for('main.html'))
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -78,7 +83,7 @@ def index():
         cur.execute("SELECT watchlist_id, name FROM Watchlists WHERE user_ID = %s", (user_id,))
         user_watchlists = cur.fetchall()
     conn.close()
-    return render_template('index.html', stocks=stocks, user_watchlists=user_watchlists)
+    return render_template('index.html', stocks=stocks, user_watchlists=user_watchlists, last_updated=datetime.now().strftime("%b %d, %Y"))
 
 @app.route('/watchlists/create', methods=['POST'])
 def create_watchlist():

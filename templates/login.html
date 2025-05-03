@@ -1,15 +1,141 @@
 <!DOCTYPE html>
-<html>
-<head><title>Login</title></head>
-<body class="container mt-5">
-  <h2>Login</h2>
-  {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
-  <form method="POST">
-    <label>Username:</label><input type="text" name="username" required><br>
-    <label>Password:</label><input type="password" name="password" required><br>
-    <button type="submit">Login</button>
-  </form>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - StockSense</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --dark-bg: #0d1117;
+      --card-bg: #161b22;
+      --accent: #22c55e;
+      --text: #e6edf3;
+      --muted: #8b949e;
+    }
 
-  <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+    body {
+      margin: 0;
+      background: var(--dark-bg);
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--text);
+    }
+
+    /* Top Navbar */
+    .navbar {
+      background-color: transparent;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar a.brand {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+
+    /* Centered Login Card */
+    .login-container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .login-title {
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .form-label {
+      margin-top: 1rem;
+      color: var(--text);
+    }
+
+    .form-control {
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      color: var(--text);
+    }
+
+    .form-control::placeholder {
+      color: var(--muted);
+    }
+
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.2);
+    }
+
+    .btn-primary {
+      width: 100%;
+      margin-top: 1.5rem;
+      background-color: var(--accent);
+      border: none;
+      font-weight: 500;
+    }
+
+    .btn-primary:hover {
+      background-color: #16a34a;
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .signup-link a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+
+    .alert-danger {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <div class="navbar">
+    <a href="{{ url_for('main') }}" class="brand">StockSense</a>
+  </div>
+
+  <!-- Login Form -->
+  <div class="login-container">
+    <h2 class="login-title">Login to StockSense</h2>
+    {% if error %}
+      <div class="alert alert-danger text-center">{{ error }}</div>
+    {% endif %}
+    <form method="POST">
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Your username" required>
+      </div>
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Your password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <div class="signup-link">
+      Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a>
+    </div>
+  </div>
+
 </body>
 </html>

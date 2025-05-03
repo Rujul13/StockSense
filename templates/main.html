@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StockSense – Smart Portfolio Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --dark-bg: #0d1117;
+      --card-bg: #161b22;
+      --accent: #22c55e;
+      --light-text: #e6edf3;
+      --muted-text: #8b949e;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--light-text);
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1rem 2rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+        color: var(--accent);
+        font-size: 1.6rem;
+        text-decoration: none;
+      }
+      
+      .navbar-brand:hover {
+        color: var(--accent) !important;
+        text-decoration: none;
+      }
+      
+
+    .navbar-nav .btn {
+      border-radius: 6px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 500;
+      transition: 0.3s ease;
+    }
+
+    .btn-login {
+      background: transparent;
+      border: 1px solid var(--light-text);
+      color: var(--light-text);
+    }
+
+    .btn-login:hover {
+      background: var(--light-text);
+      color: var(--dark-bg);
+    }
+
+    .btn-signup {
+      background-color: var(--accent);
+      border: none;
+      color: var(--dark-bg);
+      margin-left: 0.75rem;
+    }
+
+    .btn-signup:hover {
+      background-color: #16a34a;
+    }
+
+    /* Hero Section with GIF Background */
+    .hero {
+      position: relative;
+      height: 100vh;
+      background: url('https://media.giphy.com/media/LVyJyWtZ408hDpsIOy/giphy.gif?cid=ecf05e47ue6priqiooy0wfclflg01al0z8bi3tnmt0feyii6&ep=v1_gifs_search&rid=giphy.gif&ct=g') no-repeat center center / cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.65); /* Dark overlay */
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      color: white;
+      padding: 0 1rem;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      color: #cbd5e1;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 2rem 1rem;
+      background-color: #0b0f17;
+      text-align: center;
+      border-top: 1px solid #20252c;
+      font-size: 0.95rem;
+      color: var(--muted-text);
+    }
+
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2.3rem;
+      }
+
+      .hero-content p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" href="#">StockSense</a>
+      <div class="navbar-nav ms-auto d-flex align-items-center">
+        <a href="/login" class="btn btn-login me-2">Login</a>
+        <a href="/signup" class="btn btn-signup">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero with GIF Background -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Track. Predict. Grow.</h1>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 StockSense @ ADT SPRING 2025 Project.</p>
+  </footer>
+
+</body>
+</html>
