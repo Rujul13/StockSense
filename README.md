@@ -20,6 +20,7 @@
 - **Backend**: Python (Flask)
 - **Database**: PostgreSQL
 - **Visualization**: Chart.js + chartjs-chart-financial plugin
+- **Dataset**: https://www.kaggle.com/datasets/camnugent/sandp500
 
 ---
 
